@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document Analyst</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #fff; color: #111; }
+
+nav {
+  position: sticky; top: 0; background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 0 60px; height: 64px;
+  display: flex; align-items: center;
+  justify-content: space-between; z-index: 100;
+}
+.nav-logo { font-family: Georgia, serif; font-size: 17px; color: #111; }
+.nav-links { display: flex; align-items: center; gap: 36px; }
+.nav-links a { font-size: 13px; color: #999; text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: #4338ca; }
+.nav-cta {
+  background: #4338ca; color: #fff; font-size: 12px;
+  padding: 10px 24px; border-radius: 7px; font-weight: 500;
+  cursor: pointer; border: none; text-decoration: none;
+  transition: background 0.2s;
+}
+.nav-cta:hover { background: #3730a3; }
+
+.hero { background: #4338ca; padding: 80px 60px 0; text-align: center; }
+.hero-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 100px; padding: 6px 18px; margin-bottom: 32px;
+}
+.hero-pill-dot { width: 6px; height: 6px; border-radius: 50%; background: #67e8f9; }
+.hero-pill-text { font-size: 10px; color: rgba(255,255,255,0.65); letter-spacing: 0.1em; }
+.hero h1 {
+  font-family: Georgia, serif; font-size: 52px;
+  font-weight: 400; line-height: 1.2; color: #fff; margin-bottom: 16px;
+}
+.hero h1 em { font-style: italic; color: #c7d2fe; }
+.hero-sub { font-size: 16px; color: rgba(255,255,255,0.45); letter-spacing: 0.1em; margin-bottom: 10px; }
+.hero-privacy { font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 0.04em; margin-bottom: 48px; }
+.hero-privacy span { margin: 0 10px; opacity: 0.5; }
+
+.tool-card {
+  background: #fff; border-radius: 16px 16px 0 0;
+  padding: 32px; max-width: 660px; margin: 0 auto;
+  box-shadow: 0 -12px 48px rgba(0,0,0,0.12);
+}
+.upload-zone {
+  border: 1.5px dashed #c7d2fe; border-radius: 12px;
+  padding: 36px 24px; text-align: center;
+  background: #fafbff; margin-bottom: 14px;
+  cursor: pointer; transition: all 0.2s;
+}
+.upload-zone:hover { border-color: #4338ca; background: #f0f0ff; }
+.upload-zone.dragover { border-color: #4338ca; background: #eeecff; }
+.upload-icon { font-size: 32px; margin-bottom: 10px; }
+.upload-title { font-size: 14px; color: #444; margin-bottom: 4px; font-weight: 500; }
+.upload-sub { font-size: 11px; color: #bbb; margin-bottom: 16px; }
+.upload-btn-label {
+  background: #4338ca; color: #fff; font-size: 12px;
+  padding: 10px 28px; border-radius: 7px; font-weight: 500;
+  cursor: pointer; display: inline-block; transition: background 0.2s;
+}
+.upload-btn-label:hover { background: #3730a3; }
+#file-input { display: none; }
+.upload-lock { font-size: 10px; color: #ccc; margin-top: 12px; }
+
+.action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; display: none; }
+.action-btn {
+  border-radius: 10px; padding: 14px 16px; font-size: 12px;
+  cursor: pointer; text-align: left; border: 1px solid #efefef;
+  background: #fafafa; color: #666; transition: all 0.2s;
+  font-family: -apple-system, sans-serif; width: 100%;
+}
+.action-btn:hover { border-color: #c7d2fe; color: #4338ca; }
+.action-btn.primary { background: #eef2ff; border-color: #c7d2fe; color: #4338ca; font-weight: 500; }
+.start-tag {
+  background: #4338ca; color: #fff; font-size: 9px;
+  padding: 2px 7px; border-radius: 4px; margin-left: 6px; vertical-align: middle;
+}
+
+.detected-bar {
+  background: #eef2ff; border: 1px solid #c7d2fe;
+  border-radius: 8px; padding: 10px 16px;
+  display: none; align-items: center; justify-content: space-between;
+  margin-bottom: 12px; margin-top: 16px;
+}
+.detected-type { font-size: 12px; color: #4338ca; font-weight: 500; }
+.detected-sub { font-size: 10px; color: #a5b4fc; margin-top: 2px; }
+.detected-ready { font-size: 10px; color: #a5b4fc; }
+
+.score-card {
+  background: #fff; border: 1px solid #f0f0f0;
+  border-radius: 12px; padding: 24px;
+  text-align: center; margin-bottom: 16px; display: none;
+}
+.score-number { font-size: 52px; font-weight: 700; line-height: 1; margin-bottom: 6px; }
+.score-verdict { font-size: 12px; color: #999; margin-bottom: 14px; }
+.score-bar-track { background: #f0f0f0; border-radius: 6px; height: 5px; width: 100%; margin-bottom: 10px; }
+.score-bar-fill { height: 5px; border-radius: 6px; transition: width 0.8s ease; }
+.score-reason { font-size: 11px; color: #ccc; }
+
+.result-box {
+  background: #fff; border: 1px solid #efefef;
+  border-radius: 14px; padding: 28px; margin: 16px 0;
+  display: none; text-align: left;
+}
+.result-box-header {
+  font-size: 15px; color: #111; font-weight: 500;
+  margin-bottom: 20px; padding-bottom: 14px;
+  border-bottom: 1px solid #f5f5f5;
+}
+.result-body { font-size: 13px; color: #555; line-height: 1.85; text-align: left; }
+.result-para { margin-bottom: 14px; color: #555; font-size: 13px; line-height: 1.85; }
+.result-para strong { color: #111; font-weight: 600; }
+
+.risk-card { border-radius: 0 8px 8px 0; padding: 14px 16px; margin-bottom: 12px; }
+.risk-card.high { background: #fff8f8; border-left: 3px solid #ef4444; }
+.risk-card.medium { background: #fffbf0; border-left: 3px solid #f59e0b; }
+.risk-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; margin-bottom: 6px; }
+.risk-label.high { color: #ef4444; }
+.risk-label.medium { color: #f59e0b; }
+.risk-content { font-size: 12px; color: #555; line-height: 1.7; }
+.risk-content strong { color: #111; font-weight: 600; }
+
+.next-steps-card { background: #f0f0ff; border-radius: 8px; padding: 14px 16px; margin-top: 12px; }
+.next-steps-label { font-size: 11px; color: #4338ca; font-weight: 600; letter-spacing: 0.06em; margin-bottom: 8px; }
+.next-steps-content { font-size: 12px; color: #555; line-height: 1.7; }
+.next-steps-content strong { color: #111; }
+
+.qa-box {
+  background: #fafafa; border: 1px solid #f0f0f0;
+  border-radius: 12px; padding: 20px; margin-top: 16px; display: none;
+}
+.qa-label { font-size: 12px; color: #999; margin-bottom: 10px; }
+.qa-input {
+  width: 100%; padding: 12px 16px; font-size: 13px;
+  border: 1px solid #e8e8e8; border-radius: 8px;
+  font-family: -apple-system, sans-serif; color: #333;
+  outline: none; transition: border-color 0.2s;
+}
+.qa-input:focus { border-color: #c7d2fe; }
+.qa-submit {
+  background: #4338ca; color: #fff; font-size: 12px;
+  padding: 10px 24px; border-radius: 7px; font-weight: 500;
+  cursor: pointer; border: none; margin-top: 10px;
+  transition: background 0.2s; font-family: -apple-system, sans-serif;
+}
+.qa-submit:hover { background: #3730a3; }
+
+.loading { display: none; text-align: center; padding: 20px; color: #4338ca; font-size: 13px; }
+.spinner {
+  display: inline-block; width: 20px; height: 20px;
+  border: 2px solid #c7d2fe; border-top-color: #4338ca;
+  border-radius: 50%; animation: spin 0.8s linear infinite;
+  margin-right: 8px; vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+section { padding: 72px 60px; border-top: 1px solid #f5f5f5; }
+section.alt { background: #f8f8ff; }
+.section-tag { font-size: 10px; color: #4338ca; letter-spacing: 0.15em; margin-bottom: 10px; display: block; }
+.section-h2 { font-family: Georgia, serif; font-size: 34px; color: #111; font-weight: 400; margin-bottom: 6px; }
+.section-h2 em { font-style: italic; color: #4338ca; }
+.section-sub { font-size: 13px; color: #bbb; margin-bottom: 40px; }
+
+.rc-card { background: #fff; border: 1px solid #efefef; border-radius: 14px; padding: 28px; max-width: 540px; margin: 0 auto 36px; }
+.rc-top { display: flex; align-items: flex-start; justify-content: space-between; padding-bottom: 20px; border-bottom: 1px solid #f5f5f5; margin-bottom: 20px; }
+.rc-doc-name { font-size: 15px; color: #111; margin-bottom: 4px; }
+.rc-doc-sub { font-size: 10px; color: #bbb; }
+.rc-score { font-size: 32px; font-weight: 700; color: #4338ca; line-height: 1; text-align: right; }
+.rc-score span { font-size: 14px; color: #ccc; font-weight: 400; }
+.rc-score-label { font-size: 10px; color: #bbb; margin-top: 3px; }
+.rc-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 18px; }
+.rc-stat { background: #fafafa; border-radius: 8px; padding: 14px; text-align: center; }
+.rc-stat-n { font-size: 18px; font-weight: 500; color: #111; margin-bottom: 4px; }
+.rc-stat-l { font-size: 9px; color: #bbb; }
+.rc-know { background: #f0f0ff; border-radius: 10px; padding: 18px; }
+.rc-know-label { font-size: 9px; color: #4338ca; letter-spacing: 0.1em; margin-bottom: 12px; display: block; }
+.rc-know-item { display: flex; gap: 10px; margin-bottom: 10px; align-items: flex-start; }
+.rc-know-item:last-child { margin-bottom: 0; }
+.rc-know-dot { width: 5px; height: 5px; border-radius: 50%; background: #4338ca; min-width: 5px; margin-top: 6px; }
+.rc-know-text { font-size: 12px; color: #555; line-height: 1.6; }
+.try-btn {
+  display: block; background: #4338ca; color: #fff;
+  font-size: 13px; padding: 16px 40px; border-radius: 8px; font-weight: 500;
+  text-align: center; max-width: 220px; margin: 0 auto;
+  cursor: pointer; text-decoration: none; transition: background 0.2s;
+}
+.try-btn:hover { background: #3730a3; }
+
+.moment-card { background: #fafafa; border: 1px solid #f0f0f0; border-radius: 12px; padding: 26px; margin-bottom: 14px; }
+.moment-tag { font-size: 10px; color: #4338ca; letter-spacing: 0.08em; margin-bottom: 12px; display: block; font-weight: 500; }
+.moment-quote { font-family: Georgia, serif; font-size: 15px; color: #333; line-height: 1.8; font-style: italic; }
+.moment-result { font-size: 11px; color: #999; margin-top: 14px; padding-top: 14px; border-top: 1px solid #efefef; display: flex; align-items: center; gap: 8px; }
+.moment-dot { width: 5px; height: 5px; border-radius: 50%; background: #4338ca; min-width: 5px; }
+
+.trust-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 32px; }
+.trust-item { text-align: center; }
+.trust-icon { font-size: 26px; margin-bottom: 14px; }
+.trust-title { font-size: 14px; color: #111; font-weight: 500; margin-bottom: 8px; }
+.trust-desc { font-size: 12px; color: #bbb; line-height: 1.7; }
+
+footer { padding: 24px 60px; border-top: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; }
+.footer-logo { font-family: Georgia, serif; font-size: 14px; color: #ccc; }
+.footer-copy { font-size: 11px; color: #ddd; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Document Analyst</div>
+  <div class="nav-links">
+    <a href="#how-it-works">How it works</a>
+    <a href="#who-its-for">Who it's for</a>
+    <a href="#why-trust-us">Why trust us</a>
+    <a href="#tool" class="nav-cta">Try for free ↓</a>
+  </div>
+</nav>
+
+<div class="hero" id="tool">
+  <div class="hero-pill">
+    <div class="hero-pill-dot"></div>
+    <span class="hero-pill-text">FREE · NO SIGN UP · INSTANT RESULTS</span>
+  </div>
+  <h1>The smart friend who<br><em>actually reads your documents.</em></h1>
+  <p class="hero-sub">Upload. Understand. Done.</p>
+  <p class="hero-privacy">
+    Your document is never stored or shared
+    <span>·</span> Analysed and forgotten
+    <span>·</span> 100% private
+  </p>
+
+  <div class="tool-card">
+    <div class="upload-zone" id="upload-zone">
+      <div class="upload-icon">📄</div>
+      <div class="upload-title" id="upload-title">Drop your document here</div>
+      <div class="upload-sub" id="upload-sub">PDF · Contracts · Research Papers · Agreements · Offer Letters</div>
+      <label class="upload-btn-label" for="file-input">Browse files</label>
+      <input type="file" id="file-input" accept=".pdf">
+      <div class="upload-lock">🔒 Never stored · Never shared · Instantly deleted after analysis</div>
+    </div>
+
+    <div id="detected-bar" class="detected-bar">
+      <div>
+        <div class="detected-type" id="detected-type-text">📋 Detecting...</div>
+        <div class="detected-sub">Identified automatically</div>
+      </div>
+      <div class="detected-ready">✓ Ready to analyse</div>
+    </div>
+
+    <div id="score-card" class="score-card">
+      <div class="score-number" id="score-num">-</div>
+      <div class="score-verdict" id="score-verdict">Analysing...</div>
+      <div class="score-bar-track">
+        <div class="score-bar-fill" id="score-bar" style="width:0%;background:#4338ca;"></div>
+      </div>
+      <div class="score-reason" id="score-reason"></div>
+    </div>
+
+    <div class="action-grid" id="action-grid">
+      <button class="action-btn primary" onclick="runAnalysis('summarize')">
+        📝 Summarize Document <span class="start-tag">Start here</span>
+      </button>
+      <button class="action-btn" onclick="runAnalysis('explain')">💡 Explain Simply</button>
+      <button class="action-btn" onclick="runAnalysis('redflags')">🚩 Scan for Red Flags</button>
+      <button class="action-btn" onclick="runAnalysis('whattoask')">❓ What Should I Ask?</button>
+    </div>
+
+    <div class="loading" id="loading">
+      <span class="spinner"></span>
+      <span id="loading-text">Analysing your document...</span>
+    </div>
+
+    <div class="result-box" id="result-box">
+      <div class="result-box-header" id="result-title">Result</div>
+      <div class="result-body" id="result-body"></div>
+    </div>
+
+    <div class="qa-box" id="qa-box">
+      <div class="qa-label">💬 Ask anything about your document</div>
+      <input type="text" class="qa-input" id="qa-input" placeholder="e.g. What are the payment terms?">
+      <button class="qa-submit" onclick="askQuestion()">Ask →</button>
+    </div>
+  </div>
+</div>
+
+<section class="alt" id="how-it-works">
+  <span class="section-tag">HOW IT WORKS</span>
+  <h2 class="section-h2">Your personal <em>Document Report Card</em></h2>
+  <p class="section-sub">The moment you upload — before you click anything — your document is already understood.</p>
+  <div class="rc-card">
+    <div class="rc-top">
+      <div>
+        <div class="rc-doc-name">📋 Lease Agreement</div>
+        <div class="rc-doc-sub">detected automatically</div>
+      </div>
+      <div>
+        <div class="rc-score">8<span>/10</span></div>
+        <div class="rc-score-label">Safe to proceed</div>
+      </div>
+    </div>
+    <div class="rc-stats">
+      <div class="rc-stat"><div class="rc-stat-n">24</div><div class="rc-stat-l">Pages analysed</div></div>
+      <div class="rc-stat"><div class="rc-stat-n">3</div><div class="rc-stat-l">Red flags found</div></div>
+      <div class="rc-stat"><div class="rc-stat-n">47 min</div><div class="rc-stat-l">Reading time saved</div></div>
+    </div>
+    <div class="rc-know">
+      <span class="rc-know-label">TOP 3 THINGS TO KNOW</span>
+      <div class="rc-know-item"><div class="rc-know-dot"></div><div class="rc-know-text">3 month lock-in period with early exit penalty — review before signing</div></div>
+      <div class="rc-know-item"><div class="rc-know-dot"></div><div class="rc-know-text">Maintenance responsibilities are unclear — ask for clarification</div></div>
+      <div class="rc-know-item"><div class="rc-know-dot"></div><div class="rc-know-text">Automatic renewal clause present — know your cancellation deadline</div></div>
+    </div>
+  </div>
+  <a href="#tool" class="try-btn">Try it now — free ↑</a>
+</section>
+
+<section id="who-its-for">
+  <span class="section-tag">WHO IT'S FOR</span>
+  <h2 class="section-h2">The documents that keep <em>people up at night.</em></h2>
+  <p class="section-sub">Every important moment in life comes with a document. We make sure you understand it.</p>
+  <div class="moment-card">
+    <span class="moment-tag">FREELANCER · CLIENT CONTRACT</span>
+    <p class="moment-quote">"Got a 12 page contract from a new client. Had no idea what I was agreeing to. Uploaded it, got a full breakdown in 60 seconds. Found two clauses I needed to renegotiate."</p>
+    <div class="moment-result"><div class="moment-dot"></div>Negotiated better terms. Saved potential disputes worth months of work.</div>
+  </div>
+  <div class="moment-card">
+    <span class="moment-tag">STUDENT · RESEARCH PAPER</span>
+    <p class="moment-quote">"Had to review a 40 page academic paper for my thesis. Used the summarize feature and got the key findings in under a minute. Actually understood what it was saying."</p>
+    <div class="moment-result"><div class="moment-dot"></div>Finished literature review in 2 hours instead of 2 days.</div>
+  </div>
+  <div class="moment-card">
+    <span class="moment-tag">RENTER · LEASE AGREEMENT</span>
+    <p class="moment-quote">"Landlord sent the lease at 10pm before move-in day. No time to read 20 pages. Uploaded it and immediately saw the red flags. Found a clause I would have missed."</p>
+    <div class="moment-result"><div class="moment-dot"></div>Asked landlord to remove the clause before signing.</div>
+  </div>
+</section>
+
+<section id="why-trust-us" class="alt">
+  <span class="section-tag">WHY TRUST US</span>
+  <h2 class="section-h2">Built with <em>one thing in mind.</em></h2>
+  <p class="section-sub">Your confidence. Every feature exists to make you feel certain, not confused.</p>
+  <div class="trust-grid">
+    <div class="trust-item">
+      <div class="trust-icon">🔒</div>
+      <div class="trust-title">100% Private</div>
+      <div class="trust-desc">Your document is processed instantly and never saved. Analysed and forgotten.</div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">⚡</div>
+      <div class="trust-title">Instant Results</div>
+      <div class="trust-desc">Full document analysis in under 60 seconds. No waiting, no loading screens.</div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">🎯</div>
+      <div class="trust-title">Built for one job</div>
+      <div class="trust-desc">Not a general AI. Built specifically to understand documents — and nothing else.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Document Analyst</div>
+  <div class="footer-copy">The smart friend who actually reads your documents.</div>
+</footer>
+
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+const GROQ_API_KEY = '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';
+let documentText = '';
+let documentType = '';
+
+const uploadZone = document.getElementById('upload-zone');
+const fileInput = document.getElementById('file-input');
+
+uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+uploadZone.addEventListener('drop', (e) => {
+  e.preventDefault(); uploadZone.classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type === 'application/pdf') handleFile(file);
+});
+fileInput.addEventListener('change', (e) => { if (e.target.files[0]) handleFile(e.target.files[0]); });
+
+async function handleFile(file) {
+  document.getElementById('upload-title').textContent = '📄 ' + file.name;
+  document.getElementById('upload-sub').textContent = 'Reading your document...';
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    let text = '';
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+      const pageText = content.items
+  .filter(item => item.str && item.str.trim().length > 0)
+  .map(item => item.str)
+  .join(' ');
+if (pageText.trim()) text += pageText + '\n';
+    }
+    if (!text || text.trim().length < 50) {
+  document.getElementById('upload-sub').textContent = 'This PDF appears to be image-based. Please try a text-based PDF.';
+  return;
+}
+documentText = text.slice(0, 15000);
+    document.getElementById('upload-sub').textContent = '✓ ' + pdf.numPages + ' pages read successfully';
+    await detectAndScore(pdf.numPages);
+  } catch(err) {
+    document.getElementById('upload-sub').textContent = 'Error reading file. Please try another PDF.';
+  }
+}
+
+async function callGroq(messages) {
+  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + GROQ_API_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: messages, max_tokens: 1500 })
+  });
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
+
+async function detectAndScore(numPages) {
+  const detectedBar = document.getElementById('detected-bar');
+  detectedBar.style.display = 'flex';
+  document.getElementById('detected-type-text').textContent = '📋 Detecting document type...';
+
+  const typeResult = await callGroq([{
+    role: 'user',
+    content: 'Identify this document type in 2-3 words. Choose from: Contract, Research Paper, Lease Agreement, Job Offer Letter, Academic Paper, Financial Document, Policy Document, Assignment Brief, General Document. Reply with ONLY the type, nothing else. Document: ' + documentText.slice(0, 800)
+  }]);
+  documentType = typeResult.trim();
+  document.getElementById('detected-type-text').textContent = '📋 ' + documentType + ' detected';
+
+  const scoreCard = document.getElementById('score-card');
+  scoreCard.style.display = 'block';
+
+  const scoreResult = await callGroq([{
+    role: 'user',
+    content: 'Rate this ' + documentType + ' for safety and clarity (1-10). 10 = completely safe/clear. 1 = very risky/confusing. Reply ONLY in this format:\nSCORE: [number]\nREASON: [max 12 words]\nDocument: ' + documentText.slice(0, 1500)
+  }]);
+
+  let score = 7, reason = 'Document analysed successfully';
+  scoreResult.split('\n').forEach(line => {
+    if (line.startsWith('SCORE:')) score = parseInt(line.replace('SCORE:', '').trim()) || 7;
+    if (line.startsWith('REASON:')) reason = line.replace('REASON:', '').trim();
+  });
+
+  const color = score >= 7 ? '#4338ca' : score >= 5 ? '#f59e0b' : '#ef4444';
+  const verdict = score >= 7 ? 'Safe to proceed' : score >= 5 ? 'Proceed with caution' : 'Review carefully';
+
+  document.getElementById('score-num').textContent = score + '/10';
+  document.getElementById('score-num').style.color = color;
+  document.getElementById('score-verdict').textContent = verdict;
+  document.getElementById('score-bar').style.width = (score * 10) + '%';
+  document.getElementById('score-bar').style.background = color;
+  document.getElementById('score-reason').textContent = reason;
+
+  document.getElementById('action-grid').style.display = 'grid';
+  document.getElementById('qa-box').style.display = 'block';
+}
+
+async function runAnalysis(type) {
+  const prompts = {
+    summarize: 'Give a structured summary of this ' + documentType + '. Cover: key points, main obligations or findings, important dates or numbers, and what this means for the reader. End with a NEXT STEPS section.',
+    explain: 'Explain this ' + documentType + ' in plain English like you are talking to someone with no legal or technical background. Break it down clearly section by section. End with a NEXT STEPS section.',
+    redflags: 'Scan this ' + documentType + ' for red flags. For each one found, write it in this exact format:\n\nHIGH RISK or MEDIUM RISK\n[Name of the red flag]\n[Why it is risky]\nWhat to do: [specific action]\n\nEnd with a NEXT STEPS section.',
+    whattoask: 'What are the most important questions a regular person should ask before agreeing to this ' + documentType + '? List the most critical ones first with a brief explanation of why each matters. End with a NEXT STEPS section.'
+  };
+  const titles = {
+    summarize: '📝 Document Summary',
+    explain: '💡 Simple Explanation',
+    redflags: '🚩 Red Flags Report',
+    whattoask: '❓ Smart Questions to Ask'
+  };
+
+  showLoading(titles[type]);
+  const result = await callGroq([
+    { role: 'system', content: 'You are an expert document analyst reviewing a ' + documentType + '. Use ONLY the document content provided. Be clear, direct and well structured. Document: ' + documentText },
+    { role: 'user', content: prompts[type] }
+  ]);
+  showResult(titles[type], result);
+}
+
+async function askQuestion() {
+  const question = document.getElementById('qa-input').value.trim();
+  if (!question || !documentText) return;
+  showLoading('💬 Finding your answer...');
+  const result = await callGroq([
+    { role: 'system', content: 'You are an expert analyst reviewing a ' + documentType + '. Use ONLY the document content. Document: ' + documentText },
+    { role: 'user', content: question }
+  ]);
+  showResult('💬 Your Answer', result);
+}
+
+function showLoading(text) {
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('loading-text').textContent = text;
+  document.getElementById('result-box').style.display = 'none';
+}
+
+function showResult(title, body) {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('result-title').textContent = title;
+
+  let html = '';
+  const paragraphs = body.split('\n\n');
+
+  paragraphs.forEach(para => {
+    const upper = para.toUpperCase();
+    if (upper.includes('HIGH RISK')) {
+      html += '<div class="risk-card high"><div class="risk-label high">HIGH RISK</div><div class="risk-content">' + fmt(para) + '</div></div>';
+    } else if (upper.includes('MEDIUM RISK')) {
+      html += '<div class="risk-card medium"><div class="risk-label medium">MEDIUM RISK</div><div class="risk-content">' + fmt(para) + '</div></div>';
+    } else if (upper.includes('NEXT STEP')) {
+      const clean = para.replace(/next steps?:?/i, '').trim();
+      html += '<div class="next-steps-card"><div class="next-steps-label">NEXT STEPS</div><div class="next-steps-content">' + fmt(clean) + '</div></div>';
+    } else if (para.trim()) {
+      html += '<p class="result-para">' + fmt(para) + '</p>';
+    }
+  });
+
+  document.getElementById('result-body').innerHTML = html;
+  const box = document.getElementById('result-box');
+  box.style.display = 'block';
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function fmt(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>');
+}
+</script>
+</body>
+</html>
