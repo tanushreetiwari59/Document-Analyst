@@ -210,6 +210,35 @@ section.alt { background: #f8f8ff; }
 footer { padding: 24px 60px; border-top: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; }
 .footer-logo { font-family: Georgia, serif; font-size: 14px; color: #ccc; }
 .footer-copy { font-size: 11px; color: #ddd; }
+
+@media (max-width: 640px) {
+  nav { padding: 0 20px; height: 56px; }
+  .nav-links { gap: 16px; }
+  .nav-links a:not(.nav-cta) { display: none; }
+  .nav-cta { padding: 8px 14px; font-size: 11px; }
+
+  .hero { padding: 48px 20px 0; }
+  .hero h1 { font-size: 32px; line-height: 1.25; }
+  .hero-sub { font-size: 14px; }
+  .hero-privacy { font-size: 10px; }
+  .hero-pill-text { font-size: 9px; }
+
+  .tool-card { padding: 20px 16px; border-radius: 14px 14px 0 0; }
+  .upload-zone { padding: 28px 16px; }
+  .action-grid { grid-template-columns: 1fr; }
+
+  section { padding: 48px 20px; }
+  .section-h2 { font-size: 26px; }
+
+  .rc-card { padding: 20px 16px; }
+  .rc-stats { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .rc-stat { padding: 10px 6px; }
+  .rc-stat-n { font-size: 15px; }
+
+  .trust-grid { grid-template-columns: 1fr; gap: 28px; }
+
+  footer { padding: 20px; flex-direction: column; gap: 6px; text-align: center; }
+}
 </style>
 </head>
 <body>
