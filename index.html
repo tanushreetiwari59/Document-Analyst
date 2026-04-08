@@ -211,6 +211,163 @@ footer { padding: 24px 60px; border-top: 1px solid #f0f0f0; display: flex; align
 .footer-logo { font-family: Georgia, serif; font-size: 14px; color: #ccc; }
 .footer-copy { font-size: 11px; color: #ddd; }
 
+/* Split view */
+.split-view {
+  display: none;
+  margin-top: 16px;
+  gap: 14px;
+  align-items: flex-start;
+}
+.split-view.visible { display: flex; }
+.split-left {
+  flex: 0 0 30%;
+  background: #fafafa;
+  border: 1px solid #efefef;
+  border-radius: 12px;
+  padding: 20px 14px;
+  text-align: center;
+}
+.ref-icon { font-size: 26px; margin-bottom: 10px; }
+.ref-doc-name {
+  font-size: 12px; color: #111; font-weight: 600;
+  margin-bottom: 4px; word-break: break-word; line-height: 1.4;
+}
+.ref-doc-type {
+  font-size: 9px; color: #4338ca; letter-spacing: 0.1em;
+  text-transform: uppercase; margin-bottom: 14px;
+}
+.ref-excerpt {
+  font-size: 11px; color: #777; line-height: 1.75;
+  font-style: italic; text-align: left;
+  background: #fff; border: 1px solid #efefef;
+  border-radius: 8px; padding: 12px; margin-bottom: 14px;
+}
+.ref-meta { display: flex; gap: 6px; }
+.ref-meta-item {
+  flex: 1; background: #fff; border: 1px solid #f0f0f0;
+  border-radius: 8px; padding: 10px 4px;
+}
+.ref-meta-val { font-size: 15px; font-weight: 600; color: #111; margin-bottom: 3px; }
+.ref-meta-lbl { font-size: 8.5px; color: #bbb; letter-spacing: 0.06em; text-transform: uppercase; }
+.split-right {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.tab-bar {
+  display: flex;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 14px;
+}
+.tab-btn {
+  font-size: 12px;
+  color: #bbb;
+  padding: 8px 14px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: -apple-system, sans-serif;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.2s;
+}
+.tab-btn.active { color: #4338ca; border-bottom-color: #4338ca; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.tab-result-body {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.85;
+  text-align: left;
+  max-height: 460px;
+  overflow-y: auto;
+}
+.tab-actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.tab-qa-label { font-size: 12px; color: #999; margin-bottom: 10px; }
+
+/* Generate response draft button */
+.draft-btn {
+  display: inline-block;
+  margin-top: 10px;
+  background: #fff;
+  border: 1px solid #c7d2fe;
+  color: #4338ca;
+  font-size: 11px;
+  padding: 7px 14px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-family: -apple-system, sans-serif;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.draft-btn:hover { background: #eef2ff; }
+
+/* Modal */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: #fff;
+  border-radius: 16px;
+  max-width: 560px;
+  width: 100%;
+  max-height: 82vh;
+  overflow-y: auto;
+  padding: 32px;
+}
+.modal-header {
+  font-size: 15px;
+  color: #111;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.modal-subhead { font-size: 11px; color: #bbb; margin-bottom: 18px; }
+.modal-draft-text {
+  font-size: 12.5px;
+  color: #333;
+  line-height: 1.8;
+  background: #fafafa;
+  border: 1px solid #efefef;
+  border-radius: 10px;
+  padding: 18px;
+  white-space: pre-wrap;
+  margin-bottom: 20px;
+}
+.modal-footer { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.copy-btn {
+  background: #4338ca;
+  color: #fff;
+  font-size: 12px;
+  padding: 10px 22px;
+  border-radius: 7px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  font-family: -apple-system, sans-serif;
+  transition: background 0.2s;
+}
+.copy-btn:hover { background: #3730a3; }
+.modal-close-btn {
+  background: none;
+  border: 1px solid #efefef;
+  color: #999;
+  font-size: 12px;
+  padding: 10px 22px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-family: -apple-system, sans-serif;
+  transition: all 0.2s;
+}
+.modal-close-btn:hover { border-color: #bbb; color: #555; }
+.copy-confirm { font-size: 11px; color: #4338ca; display: none; }
+
 @media (max-width: 640px) {
   nav { padding: 0 20px; height: 56px; }
   .nav-links { gap: 16px; }
@@ -238,6 +395,11 @@ footer { padding: 24px 60px; border-top: 1px solid #f0f0f0; display: flex; align
   .trust-grid { grid-template-columns: 1fr; gap: 28px; }
 
   footer { padding: 20px; flex-direction: column; gap: 6px; text-align: center; }
+
+  .split-view { flex-direction: column; }
+  .split-left { flex: 1 1 auto; width: 100%; }
+  .tab-actions-grid { grid-template-columns: 1fr; }
+  .modal-box { padding: 24px 18px; }
 }
 </style>
 </head>
@@ -261,9 +423,9 @@ footer { padding: 24px 60px; border-top: 1px solid #f0f0f0; display: flex; align
   <h1>The smart friend who<br><em>actually reads your documents.</em></h1>
   <p class="hero-sub">Upload. Understand. Done.</p>
   <p class="hero-privacy">
-    Your document is never stored or shared
-    <span>·</span> Analysed and forgotten
-    <span>·</span> 100% private
+    Document text is sent to Groq's API for analysis
+    <span>·</span> Not stored on our servers
+    <span>·</span> See Groq's privacy policy for data retention details
   </p>
 
   <div class="tool-card">
@@ -273,7 +435,7 @@ footer { padding: 24px 60px; border-top: 1px solid #f0f0f0; display: flex; align
       <div class="upload-sub" id="upload-sub">PDF · Contracts · Research Papers · Agreements · Offer Letters</div>
       <label class="upload-btn-label" for="file-input">Browse files</label>
       <input type="file" id="file-input" accept=".pdf">
-      <div class="upload-lock">🔒 Never stored · Never shared · Instantly deleted after analysis</div>
+      <div class="upload-lock">🔒 Not stored on our servers · Sent to Groq API for analysis</div>
     </div>
 
     <div id="detected-bar" class="detected-bar">
@@ -310,6 +472,52 @@ footer { padding: 24px 60px; border-top: 1px solid #f0f0f0; display: flex; align
     <div class="result-box" id="result-box">
       <div class="result-box-header" id="result-title">Result</div>
       <div class="result-body" id="result-body"></div>
+    </div>
+
+    <div class="split-view" id="split-view">
+      <div class="split-left">
+        <div class="ref-icon">📄</div>
+        <div class="ref-doc-name" id="ref-doc-name"></div>
+        <div class="ref-doc-type" id="ref-doc-type"></div>
+        <div class="ref-excerpt" id="ref-excerpt"></div>
+        <div class="ref-meta">
+          <div class="ref-meta-item">
+            <div class="ref-meta-val" id="ref-pages">—</div>
+            <div class="ref-meta-lbl">Pages</div>
+          </div>
+          <div class="ref-meta-item">
+            <div class="ref-meta-val" id="ref-score">—</div>
+            <div class="ref-meta-lbl">Score</div>
+          </div>
+          <div class="ref-meta-item">
+            <div class="ref-meta-val" id="ref-confidence">—</div>
+            <div class="ref-meta-lbl">Confidence</div>
+          </div>
+        </div>
+      </div>
+      <div class="split-right">
+        <div class="tab-bar">
+          <button class="tab-btn active" data-tab="analysis" onclick="switchTab('analysis')">Analysis</button>
+          <button class="tab-btn" data-tab="actions" onclick="switchTab('actions')">Actions</button>
+          <button class="tab-btn" data-tab="ask" onclick="switchTab('ask')">Ask anything</button>
+        </div>
+        <div class="tab-panel active" id="tab-analysis">
+          <div class="tab-result-body" id="tab-result-body"></div>
+        </div>
+        <div class="tab-panel" id="tab-actions">
+          <div class="tab-actions-grid">
+            <button class="action-btn primary" onclick="runAnalysis('summarize')">📝 Summarize Document</button>
+            <button class="action-btn" onclick="runAnalysis('explain')">💡 Explain Simply</button>
+            <button class="action-btn" onclick="runAnalysis('redflags')">🚩 Scan for Red Flags</button>
+            <button class="action-btn" onclick="runAnalysis('whattoask')">❓ What Should I Ask?</button>
+          </div>
+        </div>
+        <div class="tab-panel" id="tab-ask">
+          <div class="tab-qa-label">💬 Ask anything about your document</div>
+          <input type="text" class="qa-input" id="qa-input-tab" placeholder="e.g. What are the payment terms?">
+          <button class="qa-submit" onclick="askQuestionTab()" style="margin-top:10px;">Ask →</button>
+        </div>
+      </div>
     </div>
 
     <div class="qa-box" id="qa-box">
@@ -379,7 +587,7 @@ footer { padding: 24px 60px; border-top: 1px solid #f0f0f0; display: flex; align
     <div class="trust-item">
       <div class="trust-icon">🔒</div>
       <div class="trust-title">100% Private</div>
-      <div class="trust-desc">Your document is processed instantly and never saved. Analysed and forgotten.</div>
+      <div class="trust-desc">Your document is not stored on our servers. Text is sent to Groq's API; see their privacy policy for details.</div>
     </div>
     <div class="trust-item">
       <div class="trust-icon">⚡</div>
@@ -399,12 +607,29 @@ footer { padding: 24px 60px; border-top: 1px solid #f0f0f0; display: flex; align
   <div class="footer-copy">The smart friend who actually reads your documents.</div>
 </footer>
 
+<div class="modal-overlay" id="draft-modal" onclick="closeDraftModal(event)">
+  <div class="modal-box">
+    <div class="modal-header">Response Draft</div>
+    <div class="modal-subhead">Ready to use -- edit before sending</div>
+    <div class="modal-draft-text" id="modal-draft-text"></div>
+    <div class="modal-footer">
+      <button class="copy-btn" onclick="copyDraft()">Copy to clipboard</button>
+      <button class="modal-close-btn" onclick="closeDraftModal()">Close</button>
+      <span class="copy-confirm" id="copy-confirm">Copied!</span>
+    </div>
+  </div>
+</div>
+
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-const GROQ_API_KEY = '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';
 let documentText = '';
 let documentType = '';
+let documentName = '';
+let documentPages = 0;
+let documentScore = 7;
+
+const GROQ_API_KEY = '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';
 
 const uploadZone = document.getElementById('upload-zone');
 const fileInput = document.getElementById('file-input');
@@ -419,6 +644,7 @@ uploadZone.addEventListener('drop', (e) => {
 fileInput.addEventListener('change', (e) => { if (e.target.files[0]) handleFile(e.target.files[0]); });
 
 async function handleFile(file) {
+  documentName = file.name;
   document.getElementById('upload-title').textContent = '📄 ' + file.name;
   document.getElementById('upload-sub').textContent = 'Reading your document...';
   try {
@@ -438,7 +664,7 @@ if (pageText.trim()) text += pageText + '\n';
   document.getElementById('upload-sub').textContent = 'This PDF appears to be image-based. Please try a text-based PDF.';
   return;
 }
-documentText = text.slice(0, 15000);
+documentText = text.slice(0, 10000);
     document.getElementById('upload-sub').textContent = '✓ ' + pdf.numPages + ' pages read successfully';
     await detectAndScore(pdf.numPages);
   } catch(err) {
@@ -447,11 +673,22 @@ documentText = text.slice(0, 15000);
 }
 
 async function callGroq(messages) {
-  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-    method: 'POST',
-    headers: { 'Authorization': 'Bearer ' + GROQ_API_KEY, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: messages, max_tokens: 1500 })
-  });
+  const apiKey = GROQ_API_KEY;
+  let response;
+  try {
+    response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + apiKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: messages, max_tokens: 1200 })
+    });
+  } catch (networkErr) {
+    throw new Error('Network error — please check your connection and try again.');
+  }
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    const msg = err.error && err.error.message ? err.error.message : 'API request failed (' + response.status + ')';
+    throw new Error(msg);
+  }
   const data = await response.json();
   return data.choices[0].message.content;
 }
@@ -461,39 +698,42 @@ async function detectAndScore(numPages) {
   detectedBar.style.display = 'flex';
   document.getElementById('detected-type-text').textContent = '📋 Detecting document type...';
 
-  const typeResult = await callGroq([{
-    role: 'user',
-    content: 'Identify this document type in 2-3 words. Choose from: Contract, Research Paper, Lease Agreement, Job Offer Letter, Academic Paper, Financial Document, Policy Document, Assignment Brief, General Document. Reply with ONLY the type, nothing else. Document: ' + documentText.slice(0, 800)
-  }]);
-  documentType = typeResult.trim();
-  document.getElementById('detected-type-text').textContent = '📋 ' + documentType + ' detected';
+  try {
+    const typeResult = await callGroq([{
+      role: 'user',
+      content: 'Analyse this document and reply in EXACTLY this format:\n\nTYPE: [document type in 3 words max — choose from: Contract, Research Paper, Lease Agreement, Job Offer Letter, Academic Paper, Financial Document, Policy Document, Assignment Brief, Case Study, General Document. If it contains tasks or evaluation criteria it is Assignment Brief NOT Job Offer Letter]\nSCORE: [number 1-10 for safety and clarity]\nREASON: [max 12 words explaining the score]\n\nDocument: ' + documentText.slice(0, 3000)
+    }]);
 
-  const scoreCard = document.getElementById('score-card');
-  scoreCard.style.display = 'block';
+    let score = 7, reason = 'Document analysed successfully';
+    typeResult.split('\n').forEach(line => {
+      if (line.startsWith('TYPE:')) documentType = line.replace('TYPE:', '').trim();
+      if (line.startsWith('SCORE:')) score = parseInt(line.replace('SCORE:', '').trim()) || 7;
+      if (line.startsWith('REASON:')) reason = line.replace('REASON:', '').trim();
+    });
+    if (!documentType) documentType = 'General Document';
+    documentPages = numPages;
+    documentScore = score;
 
-  const scoreResult = await callGroq([{
-    role: 'user',
-    content: 'Rate this ' + documentType + ' for safety and clarity (1-10). 10 = completely safe/clear. 1 = very risky/confusing. Reply ONLY in this format:\nSCORE: [number]\nREASON: [max 12 words]\nDocument: ' + documentText.slice(0, 1500)
-  }]);
+    document.getElementById('detected-type-text').textContent = '📋 ' + documentType + ' detected';
 
-  let score = 7, reason = 'Document analysed successfully';
-  scoreResult.split('\n').forEach(line => {
-    if (line.startsWith('SCORE:')) score = parseInt(line.replace('SCORE:', '').trim()) || 7;
-    if (line.startsWith('REASON:')) reason = line.replace('REASON:', '').trim();
-  });
+    const color = score >= 7 ? '#4338ca' : score >= 5 ? '#f59e0b' : '#ef4444';
+    const verdict = score >= 7 ? 'Safe to proceed' : score >= 5 ? 'Proceed with caution' : 'Review carefully';
 
-  const color = score >= 7 ? '#4338ca' : score >= 5 ? '#f59e0b' : '#ef4444';
-  const verdict = score >= 7 ? 'Safe to proceed' : score >= 5 ? 'Proceed with caution' : 'Review carefully';
+    const scoreCard = document.getElementById('score-card');
+    scoreCard.style.display = 'block';
+    document.getElementById('score-num').textContent = score + '/10';
+    document.getElementById('score-num').style.color = color;
+    document.getElementById('score-verdict').textContent = verdict;
+    document.getElementById('score-bar').style.width = (score * 10) + '%';
+    document.getElementById('score-bar').style.background = color;
+    document.getElementById('score-reason').textContent = reason;
 
-  document.getElementById('score-num').textContent = score + '/10';
-  document.getElementById('score-num').style.color = color;
-  document.getElementById('score-verdict').textContent = verdict;
-  document.getElementById('score-bar').style.width = (score * 10) + '%';
-  document.getElementById('score-bar').style.background = color;
-  document.getElementById('score-reason').textContent = reason;
-
-  document.getElementById('action-grid').style.display = 'grid';
-  document.getElementById('qa-box').style.display = 'block';
+    document.getElementById('action-grid').style.display = 'grid';
+    document.getElementById('qa-box').style.display = 'block';
+  } catch (err) {
+    document.getElementById('detected-type-text').textContent = '⚠ ' + err.message;
+    document.getElementById('detected-type-text').style.color = '#ef4444';
+  }
 }
 
 async function runAnalysis(type) {
@@ -511,43 +751,51 @@ async function runAnalysis(type) {
   };
 
   showLoading(titles[type]);
-  const result = await callGroq([
-    { role: 'system', content: 'You are an expert document analyst reviewing a ' + documentType + '. Use ONLY the document content provided. Be clear, direct and well structured. Document: ' + documentText },
-    { role: 'user', content: prompts[type] }
-  ]);
-  showResult(titles[type], result);
+  try {
+    const result = await callGroq([
+      { role: 'system', content: 'You are an expert document analyst reviewing a ' + documentType + '. Use ONLY the document content provided. Be clear, direct and well structured. Always end with a NEXT STEPS section. Document: ' + documentText },
+      { role: 'user', content: prompts[type] }
+    ]);
+    showResult(titles[type], result);
+  } catch (err) {
+    showError(err.message);
+  }
 }
 
 async function askQuestion() {
   const question = document.getElementById('qa-input').value.trim();
   if (!question || !documentText) return;
   showLoading('💬 Finding your answer...');
-  const result = await callGroq([
-    { role: 'system', content: 'You are an expert analyst reviewing a ' + documentType + '. Use ONLY the document content. Document: ' + documentText },
-    { role: 'user', content: question }
-  ]);
-  showResult('💬 Your Answer', result);
+  try {
+    const result = await callGroq([
+      { role: 'system', content: 'You are an expert analyst reviewing a ' + documentType + '. Use ONLY the document content. Document: ' + documentText },
+      { role: 'user', content: question }
+    ]);
+    showResult('💬 Your Answer', result);
+  } catch (err) {
+    showError(err.message);
+  }
 }
 
 function showLoading(text) {
   document.getElementById('loading').style.display = 'block';
   document.getElementById('loading-text').textContent = text;
   document.getElementById('result-box').style.display = 'none';
+  document.getElementById('split-view').classList.remove('visible');
 }
 
 function showResult(title, body) {
   document.getElementById('loading').style.display = 'none';
-  document.getElementById('result-title').textContent = title;
 
-  let html = '';
+  let html = '<div style="font-size:12px;color:#999;font-weight:500;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid #f5f5f5;">' + title + '</div>';
   const paragraphs = body.split('\n\n');
 
   paragraphs.forEach(para => {
     const upper = para.toUpperCase();
     if (upper.includes('HIGH RISK')) {
-      html += '<div class="risk-card high"><div class="risk-label high">HIGH RISK</div><div class="risk-content">' + fmt(para) + '</div></div>';
+      html += '<div class="risk-card high"><div class="risk-label high">HIGH RISK</div><div class="risk-content">' + fmt(para) + '</div><button class="draft-btn" onclick="generateDraft(this)">Generate a response draft</button></div>';
     } else if (upper.includes('MEDIUM RISK')) {
-      html += '<div class="risk-card medium"><div class="risk-label medium">MEDIUM RISK</div><div class="risk-content">' + fmt(para) + '</div></div>';
+      html += '<div class="risk-card medium"><div class="risk-label medium">MEDIUM RISK</div><div class="risk-content">' + fmt(para) + '</div><button class="draft-btn" onclick="generateDraft(this)">Generate a response draft</button></div>';
     } else if (upper.includes('NEXT STEP')) {
       const clean = para.replace(/next steps?:?/i, '').trim();
       html += '<div class="next-steps-card"><div class="next-steps-label">NEXT STEPS</div><div class="next-steps-content">' + fmt(clean) + '</div></div>';
@@ -556,16 +804,105 @@ function showResult(title, body) {
     }
   });
 
-  document.getElementById('result-body').innerHTML = html;
-  const box = document.getElementById('result-box');
-  box.style.display = 'block';
-  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  // Populate reference panel
+  const excerptRaw = documentText.replace(/\s+/g, ' ').trim().slice(0, 200);
+  const excerpt = excerptRaw.length >= 200 ? excerptRaw + '...' : excerptRaw;
+  const confidence = documentScore >= 8 ? 'High' : documentScore >= 5 ? 'Medium' : 'Low';
+  document.getElementById('ref-doc-name').textContent = documentName;
+  document.getElementById('ref-doc-type').textContent = documentType;
+  document.getElementById('ref-excerpt').textContent = '\u201c' + excerpt + '\u201d';
+  document.getElementById('ref-pages').textContent = documentPages || '—';
+  document.getElementById('ref-score').textContent = documentScore + '/10';
+  document.getElementById('ref-confidence').textContent = confidence;
+
+  document.getElementById('tab-result-body').innerHTML = html;
+  switchTab('analysis');
+
+  const splitView = document.getElementById('split-view');
+  splitView.classList.add('visible');
+  document.getElementById('qa-box').style.display = 'none';
+  splitView.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function showError(message) {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('split-view').classList.remove('visible');
+  document.getElementById('result-title').textContent = '⚠ Error';
+  document.getElementById('result-body').innerHTML = '<p class="result-para" style="color:#ef4444;">' + message + '</p>';
+  document.getElementById('result-box').style.display = 'block';
 }
 
 function fmt(text) {
   return text
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\n/g, '<br>');
+    .split('\n')
+    .map(line => {
+      if (/^#{3,}\s+/.test(line)) {
+        return '<span style="display:block;font-size:11px;font-weight:700;color:#4338ca;letter-spacing:0.08em;text-transform:uppercase;margin:14px 0 6px;">' + line.replace(/^#+\s+/, '') + '</span>';
+      }
+      if (/^#{1,2}\s+/.test(line)) {
+        return '<span style="display:block;font-size:13px;font-weight:600;color:#111;margin:16px 0 6px;">' + line.replace(/^#+\s+/, '') + '</span>';
+      }
+      return line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    })
+    .join('<br>');
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === name);
+  });
+  document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+async function askQuestionTab() {
+  const question = document.getElementById('qa-input-tab').value.trim();
+  if (!question || !documentText) return;
+  showLoading('💬 Finding your answer...');
+  try {
+    const result = await callGroq([
+      { role: 'system', content: 'You are an expert analyst reviewing a ' + documentType + '. Use ONLY the document content. Document: ' + documentText },
+      { role: 'user', content: question }
+    ]);
+    showResult('💬 Your Answer', result);
+  } catch (err) {
+    showError(err.message);
+  }
+}
+
+function generateDraft(btn) {
+  const card = btn.closest('.risk-card');
+  const riskText = card ? card.querySelector('.risk-content').innerText : '';
+  const type = documentType.toLowerCase();
+  let draft = '';
+
+  if (type.includes('contract') || type.includes('lease') || type.includes('agreement') || type.includes('offer')) {
+    draft = 'Subject: Proposed Amendment to ' + documentType + '\n\nDear [Recipient],\n\nThank you for sharing this ' + documentType + '. I have reviewed it carefully and would like to discuss the following concern before proceeding:\n\n' + riskText + '\n\nI would appreciate your clarification on this point, and if possible, a proposed amendment that addresses the concern above. I am happy to discuss this further at your convenience.\n\nPlease let me know how you would like to proceed.\n\nBest regards,\n[Your Name]';
+  } else if (type.includes('research') || type.includes('academic') || type.includes('paper') || type.includes('study') || type.includes('case')) {
+    draft = 'Summary Note\n\nDocument reviewed: ' + documentType + '\nDate: ' + new Date().toLocaleDateString() + '\n\nKey concern identified:\n\n' + riskText + '\n\nThis note is intended to flag the above point for further review or discussion with colleagues. Additional context may be required before drawing conclusions.\n\n[Your Name]';
+  } else if (type.includes('assignment') || type.includes('brief')) {
+    draft = 'Subject: Clarification Request -- ' + documentType + '\n\nHello,\n\nThank you for sharing the assignment brief. Before I proceed, I have a few questions related to the following:\n\n' + riskText + '\n\nSpecifically:\n1. Could you clarify what is expected here?\n2. Are there any constraints or guidelines I should follow?\n3. What is the preferred format for the response?\n\nI want to make sure I understand the requirements correctly before starting. Please let me know when you have a moment to discuss.\n\nThank you,\n[Your Name]';
+  } else {
+    draft = 'Subject: Question regarding ' + documentType + '\n\nDear [Recipient],\n\nThank you for sharing this document. After reviewing it, I wanted to flag the following for discussion:\n\n' + riskText + '\n\nCould you please clarify or provide more detail on this point? I would like to fully understand the implications before moving forward.\n\nLooking forward to your response.\n\nBest regards,\n[Your Name]';
+  }
+
+  document.getElementById('modal-draft-text').textContent = draft;
+  document.getElementById('draft-modal').classList.add('open');
+}
+
+function closeDraftModal(e) {
+  if (e && e.target !== document.getElementById('draft-modal')) return;
+  document.getElementById('draft-modal').classList.remove('open');
+  document.getElementById('copy-confirm').style.display = 'none';
+}
+
+function copyDraft() {
+  const text = document.getElementById('modal-draft-text').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const confirm = document.getElementById('copy-confirm');
+    confirm.style.display = 'inline';
+    setTimeout(() => { confirm.style.display = 'none'; }, 2000);
+  });
 }
 </script>
 </body>
