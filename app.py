@@ -2,9 +2,18 @@ import streamlit as st
 import PyPDF2
 import docx
 import io
+import os
 from groq import Groq
+from dotenv import load_dotenv
 
-client = Groq(api_key="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")
+load_dotenv()
+
+api_key = os.environ.get("GROQ_API_KEY")
+if not api_key:
+    st.error("GROQ_API_KEY not found. Please add it to your .env file.")
+    st.stop()
+
+client = Groq(api_key=api_key)
 
 st.set_page_config(
     page_title="Document Analyst",
@@ -141,7 +150,7 @@ Always end with a NEXT STEPS section.
 Document: {doc_text}"""},
             {"role": "user", "content": prompt}
         ],
-        max_tokens=800
+        max_tokens=1200
     )
     return response.choices[0].message.content
 
@@ -161,7 +170,7 @@ if uploaded_file:
         st.error("Could not read this document. It may be a scanned image PDF. Please try a text-based PDF.")
         st.stop()
 
-    doc_text = doc_text[:8000]
+    doc_text = doc_text[:10000]
 
     with st.spinner("Analysing your document..."):
         doc_type, score, reason = analyse_document(doc_text)
