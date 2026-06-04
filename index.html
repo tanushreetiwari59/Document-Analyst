@@ -633,7 +633,16 @@ let documentName = '';
 let documentPages = 0;
 let documentScore = 7;
 
-const GROQ_API_KEY = 'REDACTED_GROQ_API_KEY';
+// SECURITY: never hardcode an API key here — it would be exposed to everyone who
+// loads this page. The key is requested at runtime and kept only in this browser tab.
+function getGroqApiKey() {
+  let key = sessionStorage.getItem('GROQ_API_KEY');
+  if (!key) {
+    key = window.prompt('Enter your Groq API key (kept only in this browser tab):');
+    if (key) sessionStorage.setItem('GROQ_API_KEY', key.trim());
+  }
+  return key ? key.trim() : '';
+}
 
 const uploadZone = document.getElementById('upload-zone');
 const fileInput = document.getElementById('file-input');
@@ -677,7 +686,8 @@ documentText = text.slice(0, 10000);
 }
 
 async function callGroq(messages) {
-  const apiKey = GROQ_API_KEY;
+  const apiKey = getGroqApiKey();
+  if (!apiKey) throw new Error('A Groq API key is required to analyse documents.');
   let response;
   try {
     response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
