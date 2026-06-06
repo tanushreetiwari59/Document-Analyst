@@ -32,6 +32,18 @@ no account to create, and no build step — open it in a browser and begin.
 
 ---
 
+## Demo
+
+<div align="center">
+
+https://github.com/tanushreetiwari59/Document-Analyst/raw/main/Doc-Analyst.mp4
+
+</div>
+
+> If the player does not load, [download the demo](Doc-Analyst.mp4) to view it locally.
+
+---
+
 ## Key Features
 
 | Capability | Description |
