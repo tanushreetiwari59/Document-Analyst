@@ -36,11 +36,22 @@ no account to create, and no build step — open it in a browser and begin.
 
 <div align="center">
 
-[![Watch the demo](demo-poster.jpg)](https://github.com/tanushreetiwari59/Document-Analyst/raw/main/Doc-Analyst.mp4)
+![Document Analyst demo](demo.gif)
 
-▶️ **[Watch the demo](https://github.com/tanushreetiwari59/Document-Analyst/raw/main/Doc-Analyst.mp4)** — click the image above to play.
+▶️ **[Watch in full HD](https://github.com/tanushreetiwari59/Document-Analyst/raw/main/Doc-Analyst.mp4)** — higher-quality MP4 with the complete walkthrough.
 
 </div>
+
+<details>
+<summary><b>Prefer a still preview?</b></summary>
+
+<div align="center">
+
+[![Document Analyst screenshot](demo-poster.jpg)](https://github.com/tanushreetiwari59/Document-Analyst/raw/main/Doc-Analyst.mp4)
+
+</div>
+
+</details>
 
 ---
 
