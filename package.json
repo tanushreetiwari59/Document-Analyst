@@ -1,22 +1,22 @@
 {
-  "name": "primary",
+  "name": "document-analyst",
   "version": "1.0.0",
   "description": "Document Analyst - AI-powered document analysis tool",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://x-access-token:ghs_ucpkuHRU8qUTDyo3XrwysmDSEyKM4X0jNsuU@github.com/tanushreetiwari59/Test.git"
+    "url": "git+https://github.com/tanushreetiwari59/Document-Analyst.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/tanushreetiwari59/Test/issues"
+    "url": "https://github.com/tanushreetiwari59/Document-Analyst/issues"
   },
-  "homepage": "https://github.com/tanushreetiwari59/Test#readme",
+  "homepage": "https://github.com/tanushreetiwari59/Document-Analyst#readme",
   "dependencies": {
     "@vercel/analytics": "^2.0.1"
   }

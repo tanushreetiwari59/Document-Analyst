@@ -36,9 +36,9 @@ no account to create, and no build step — open it in a browser and begin.
 
 <div align="center">
 
-![Document Analyst demo](demo.gif)
+![Document Analyst demo](assets/demo.gif)
 
-▶️ **[Watch in full HD](https://github.com/tanushreetiwari59/Document-Analyst/raw/main/Doc-Analyst.mp4)** — higher-quality MP4 with the complete walkthrough.
+▶️ **[Watch in full HD](https://github.com/tanushreetiwari59/Document-Analyst/raw/main/assets/demo.mp4)** — higher-quality MP4 with the complete walkthrough.
 
 </div>
 
@@ -47,7 +47,7 @@ no account to create, and no build step — open it in a browser and begin.
 
 <div align="center">
 
-[![Document Analyst screenshot](demo-poster.jpg)](https://github.com/tanushreetiwari59/Document-Analyst/raw/main/Doc-Analyst.mp4)
+[![Document Analyst screenshot](assets/demo-poster.jpg)](https://github.com/tanushreetiwari59/Document-Analyst/raw/main/assets/demo.mp4)
 
 </div>
 
@@ -102,7 +102,7 @@ No installation is required.
 1. Download or clone the repository:
 
    ```sh
-   git clone https://github.com/tanushreetiwari59/Test.git
+   git clone https://github.com/tanushreetiwari59/Document-Analyst.git
    ```
 
 2. Open `index.html` in any modern browser.
@@ -138,8 +138,31 @@ Generate a free key from the [Groq Console](https://console.groq.com/keys).
 
 **Groq** (`llama-3.3-70b-versatile`) · **pdf.js** · **HTML / CSS / JavaScript** — no frameworks, no build pipeline.
 
-> A **Streamlit** implementation (`app.py`) is also included for local use, adding Word (`.docx`)
-> support and server-side key handling via a `.env` file.
+> A **Streamlit** implementation (`streamlit/app.py`) is also included for local use, adding Word
+> (`.docx`) support and server-side key handling via a `.env` file:
+>
+> ```sh
+> pip install -r streamlit/requirements.txt
+> streamlit run streamlit/app.py
+> ```
+
+---
+
+## Project Structure
+
+```
+.
+├── index.html              # Client-side web app (deploy entry point)
+├── assets/                 # Demo media
+│   ├── demo.mp4            #   full-quality walkthrough
+│   ├── demo.gif            #   animated preview for the README
+│   └── demo-poster.jpg     #   still preview
+├── streamlit/              # Optional local Streamlit app
+│   ├── app.py
+│   └── requirements.txt
+├── package.json
+└── README.md
+```
 
 ---
 
