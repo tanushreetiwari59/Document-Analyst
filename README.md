@@ -36,11 +36,11 @@ no account to create, and no build step — open it in a browser and begin.
 
 <div align="center">
 
-<video src="https://github.com/tanushreetiwari59/Document-Analyst/raw/main/Doc-Analyst.mp4" controls muted width="100%"></video>
+[![Watch the demo](demo-poster.jpg)](https://github.com/tanushreetiwari59/Document-Analyst/raw/main/Doc-Analyst.mp4)
+
+▶️ **[Watch the demo](https://github.com/tanushreetiwari59/Document-Analyst/raw/main/Doc-Analyst.mp4)** — click the image above to play.
 
 </div>
-
-> If the player does not load, [download the demo](Doc-Analyst.mp4) to view it locally.
 
 ---
 
